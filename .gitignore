@@ -1,0 +1,24 @@
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+
+# Local secrets; example files may be shared after review
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+
+# Local Codex session data; keep config.toml and agents/ in version control
+.codex/auth.json
+.codex/history.jsonl
+.codex/sessions/
+.codex/log/
+.codex/tmp/
+
+# Temporary output
+*.log
+*.tmp
+*.bak
+__pycache__/
