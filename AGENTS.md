@@ -1,3 +1,4 @@
+<!-- Adapted from Aidan-M-Dev/claude-code-agents; AGPL-3.0. Modified 2026-11-01. -->
 # AGENTS.md — Codex Agent Team
 
 Read by every Codex session in this repo, including spawned subagents.
@@ -10,19 +11,22 @@ Part A plus your own developer instructions and skip Part B.
 ## Part A — Project facts and hard rules (everyone)
 
 ### What this is
-- This directory currently contains a Codex specialist-agent configuration, not an application.
-- The product purpose, users, framework, language, database, test runner and runtime
-  are pending user confirmation. Do not infer them from the available agent roles.
-- Once product requirements are confirmed, design docs belong in `architecture/`
-  (start with `overview.md`) and tasks in `tasks/`, with status in
-  `tasks/overview.md`. These directories do not exist yet; do not create
-  speculative design or tasks for the unknown product.
-- No new dependencies unless clearly justified in the report.
+- A Python 3.11+ standard-library CLI that generates Codex and Claude Code
+  agent definitions from `team.toml` and detects configuration drift.
+- Shared role prompts live only in `team.toml`. Generated files in `.codex/`,
+  `.claude/` and `CLAUDE.md` must be changed through the generator.
+- Architecture: `architecture/overview.md`. Status and evidence: `tasks/overview.md`.
+- No database, web server or additional dependencies are required.
+- This is an attributed AGPL-3.0 adaptation; preserve LICENSE and NOTICE.md.
 
 ### Running things
 - From the project root, open Codex with `codex -C .`.
-- Dev, full-suite, single-test, typecheck and lint commands: not configured;
-  record the actual commands here after the product bootstrap verifies them.
+- Validate source: `python3 -m agent_team validate`.
+- Generate both clients: `python3 -m agent_team generate --output .`.
+- Check the snapshot: `python3 -m agent_team check --output .`.
+- Full test suite: `python3 -m unittest discover -s tests -v`.
+- One test module: `python3 -m unittest discover -s tests -p test_generator.py -v`.
+- Typecheck/lint: no separate tools configured; do not invent passing results.
 - Configuration check from the project root: `codex --strict-config -C . app-server --print-startup-config`.
 - Run one delegated agent at a time; wait for completion and close/release its
   slot before starting the next when the client supports it. If it cannot
@@ -54,8 +58,8 @@ Part A plus your own developer instructions and skip Part B.
 
 ### Code conventions
 - Match surrounding code: naming, comment density, idioms.
-- Product file layout and styling are pending the approved architecture.
-  Future UI work must support semantic HTML, keyboard access and clear labels.
+- Python source lives in `agent_team/`; behavioral tests live in `tests/`.
+- Use the standard library. Validate all write targets before changing files.
 - Logging: follow `architecture/logging.md` if it exists.
 - When a test contradicts the spec, fix the test (tester role); never bend
   code to a wrong test and never game a test with dummy code.
@@ -144,11 +148,7 @@ safety rules in any spawn prompt that touches data, Docker or deployment.
 
 ---
 
-## Template state (replace with verified project facts when adopting)
-- This template provides nine standalone agent definitions and sequential
-  project settings. It does not include an application or application tests.
-- On adoption, inspect the target project and record its actual scope, stack,
-  commands, architecture, task status and Git state in Part A and this section.
-  Reuse existing project records; do not overwrite them with template defaults.
-- Open a new Codex conversation at the target project root, supply the product
-  brief, and verify agent discovery/delegation in that session.
+## Current project state
+- The shared specification, dual-client generator and behavioral tests are implemented.
+- Consult tasks/overview.md for validation results, delivery status and limits.
+- The repository remains private unless the user explicitly approves a visibility change.
