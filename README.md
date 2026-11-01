@@ -1,4 +1,4 @@
-# Codex Agent Team
+# Agent Team Kit
 
 A local configuration generator for Codex and Claude Code. Define roles once in
 `team.toml`, generate both native formats, and check that the generated files
@@ -107,10 +107,24 @@ Sources are limited to 1 MiB and 1-64 roles.
 | `security_auditor` | `security-auditor` | Security review |
 | `git_committer` | `git-committer` | Validation and local Git commits |
 
-```text
-Requirements -> architecture -> task plan -> tests -> implementation
--> code review -> fixes and security review when needed -> local commit
-```
+The default workflow scales with risk rather than running every role:
+
+| Task | Default workflow |
+| --- | --- |
+| Small, reversible change | Main agent implements and checks directly |
+| Several coupled steps | Brief acceptance criteria, implementation and targeted checks; delegate only when useful |
+| High-impact change | Reversible preparation, focused independent review and relevant actual tests |
+| Explicit full-team request | Use the specialist roles needed for the requested workflow |
+
+The main agent can implement, test and commit within authorization. Architect,
+planner, test writer and committer handoffs are optional; unchanged evidence is
+reused. Role prompts apply only when that specialist is actually delegated a
+task. Existing projects retain their own `AGENTS.md`, so merge this workflow
+explicitly when adopting it there. See the generated starter for the full rules.
+
+These rules aim to reduce unnecessary handoffs and repeated context. No token,
+latency or quality improvement has been measured; this is not a runtime scheduler
+or an enforced spending limit.
 
 The client runs the workflow; this Python tool generates and checks its
 configuration. It does not execute the workflow or create sandbox boundaries.

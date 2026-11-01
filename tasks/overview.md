@@ -36,3 +36,21 @@ discovery/dispatch, performance and cost comparisons have not been run.
 
 These are local verification results. Remote delivery is checked separately
 against GitHub's branch/tree and visibility; commits identify delivered snapshots.
+
+## Naming and workflow update: 2026-11-01
+
+- Project name: Agent Team Kit. GitHub repository: `Nonopipi/agent-team-kit`.
+  The repository name, dual-client description and public visibility were
+  verified through GitHub metadata after the user-authorized settings changes.
+- Replaced the mandatory specialist pipeline with a risk-based default in
+  project guidance and the generated starter. The main agent can implement;
+  delegation is optional for bounded needs. High-impact work adds focused
+  independent review and checks of original evidence.
+- Updated Claude's generated guidance to describe this default. Existing
+  project instructions remain preserved during generation.
+- Post-change checks: 13 behavioral tests passed; 20 generated files matched
+  source; Claude Code CLI validation of all nine role files passed.
+- Review method: inspected final policy and generated output, preserved the
+  original license, and checked generator behavior. No second reviewer or
+  actual AI dispatch was used. Token, latency and quality gains are unmeasured.
+- Final `agent_team/core.py` SHA-256: `703b2fdb491ee6ab11484beb788e9363e3a5fdc8302a49cbc272973c68cbe3dd`.

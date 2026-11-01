@@ -1,5 +1,5 @@
 <!-- Adapted from Aidan-M-Dev/claude-code-agents; AGPL-3.0. Modified 2026-11-01. -->
-# AGENTS.md — Codex Agent Team
+# AGENTS.md — Agent Team Kit
 
 Read by every Codex session in this repo, including spawned subagents.
 Part A applies to everyone. Part B applies ONLY to the main (orchestrator)
@@ -28,12 +28,12 @@ Part A plus your own developer instructions and skip Part B.
 - One test module: `python3 -m unittest discover -s tests -p test_generator.py -v`.
 - Typecheck/lint: no separate tools configured; do not invent passing results.
 - Configuration check from the project root: `codex --strict-config -C . app-server --print-startup-config`.
-- Run one delegated agent at a time; wait for completion and close/release its
+- When delegation is justified, run one specialist at a time; close/release its
   slot before starting the next when the client supports it. If it cannot
   release completed agents and the single-slot cap blocks progress, report
   that client limitation; do not repeatedly attempt to spawn. Only one
   test/build/screenshot run at a time.
-- Scratch files/screenshots: `/tmp/codex-agent-team/`, never the project root.
+- Scratch files/screenshots: `/tmp/agent-team-kit/`, never the project root.
 - Check whether Git is initialized before using Git commands. If it is not,
   use explicit file lists for checks and report Git commands as unavailable.
   Do not initialize Git or claim commits until repository setup is part of
@@ -66,89 +66,61 @@ Part A plus your own developer instructions and skip Part B.
 
 ---
 
-## Part B — Orchestrator workflow (main session only)
+## Part B: main conversation
 
-You are a senior engineering manager orchestrating specialist subagents. You
-do NOT write application code or tests. You delegate, verify outputs, handle
-failures and keep the project moving. Your own edits are limited to
-`tasks/overview.md` status and planning notes. For this agent-team setup
-only, configuration and onboarding documentation may also be maintained;
-this does not authorize the main session to write application code or tests.
+### Choose the smallest sufficient workflow
 
-**This file is the standing instruction to delegate: for every coding task,
-spawn the specialists below via subagents, one at a time, and wait for each to
-finish before the next.** Do not do their work inline.
+Use complexity, impact and reversibility to choose a tier. File count, the
+presence of AI and a task's name do not determine its tier. Reuse the current
+plan and evidence; raise the tier only when new risk appears.
 
-### Team (`.codex/agents/`)
-| Agent              | Role                                    |
-|--------------------|-----------------------------------------|
-| `architect`        | System design → `architecture/`         |
-| `planner`          | Task decomposition → `tasks/`           |
-| `tdd_test_writer`  | Write failing tests (RED)               |
-| `frontend_dev`     | UI implementation (GREEN)               |
-| `backend_dev`      | API/server implementation (GREEN)       |
-| `database_dev`     | Schema/migration implementation (GREEN) |
-| `code_reviewer`    | Read-only review, PASS/FAIL             |
-| `security_auditor` | Read-only security scan, PASS/FAIL      |
-| `git_committer`    | Validate and commit                     |
+| Tier | Typical trigger | Default execution | Verification |
+| --- | --- | --- | --- |
+| 1 | Clear, low-impact, reversible task | Main agent completes it directly; no delegation | Relevant direct check |
+| 2 | Several steps or coupled changes | Briefly state deliverable, assumptions and acceptance; main agent implements | Targeted behavioral checks against acceptance |
+| 3 | Errors could materially affect privacy, security, money, production or important data | Prepare reversibly; add focused independent review | Original evidence, final diff and relevant actual tests |
 
-### Rules
-1. **Pipeline, never skip a step:**
-   `tdd_test_writer → specialist → code_reviewer → [fix loop] → git_committer`.
-   Add `security_auditor` before committing when a task touches auth,
-   input handling/validation, file parsing, Docker or networking.
-   **Bootstrap exception:** if no test runner exists, the first approved
-   scaffolding task goes to `backend_dev` to configure the runner and a
-   passing smoke test, then `code_reviewer` (and security review if applicable).
-   Record a working test command in Part A before normal RED/GREEN work.
-   Configuration/documentation-only setup uses direct validation and review;
-   do not invent application tests for this agent configuration.
-2. **Failures:** review FAIL → send the BLOCKING issues back to the same
-   specialist. Max 3 fix rounds; infrastructure failures max 2 retries. Then
-   STOP and ask the user.
-3. **Keep the user informed:** short status after each agent finishes, in
-   the user's preferred language.
-4. **Task status:** after each commit tick the row in `tasks/overview.md`.
-   In an initialized repository, one task = one commit; do not leave
-   uncommitted task changes between tasks. Before Git setup, report changes
-   by explicit file list and mark commit status as not executed.
-5. **Verify before trusting:** after each hand-back check the files on disk
-   and `git status` when a repository exists. Never equate model claims with
-   verified results.
-6. **One heavy agent at a time** (tests, builds, screenshots).
-7. **Ask the user before:** architecture trade-offs, look/design decisions
-   they haven't approved, anything touching real data or deployment, 3× review
-   failures, CRITICAL security findings. Do NOT stop for routine execution,
-   choosing agents, running tests, committing.
+- The main agent may write application code, tests, configuration and docs.
+  Specialist roles are optional capabilities, not a required assembly line.
+- For tier 2, delegate a bounded task only when a concrete unknown, specialist
+  need or context burden justifies the extra handoff. Do not summon architect,
+  planner, test writer, reviewer and committer for every change.
+- For tier 3, prefer a reviewer who did not produce the change. Where that is
+  unavailable, independently check original evidence and tests, state the
+  limitation and leave unresolved consequential actions pending. Changing your
+  own role label is not independent review.
+- If the user explicitly requests the full specialist workflow, use available
+  roles and explain the extra handoffs. Respect client and session limits;
+  report unavailable roles without repeatedly attempting to spawn them.
 
-### Spawning agents effectively (token efficiency)
-Inline the context each agent needs instead of telling it to read many files:
-acceptance criteria, relevant data models/contracts, exact test file paths and
-the exact test command. Exception: agents may read `architecture/logging.md`
-and the one design doc for their task by reference. Repeat the relevant Part A
-safety rules in any spawn prompt that touches data, Docker or deployment.
+### Keep context and checks proportional
 
-- tdd_test_writer: inline acceptance criteria; ask for the exact contract
-  (file paths, exports, names) GREEN must create.
-- specialists: inline that contract, failing test files and the test command.
-- code_reviewer: acceptance criteria; it reviews `git diff HEAD` + untracked.
-- git_committer: the exact expected file list; it makes NO file edits.
-
-### Workflows
-- **New project:** confirm requirements → `architect` → present decisions,
-  get approval → `planner` → present `tasks/overview.md`, ask "ready?" → run
-  the pipeline per task. If no test runner exists, Task 1 uses the bootstrap
-  exception above. Reuse already approved decisions and plans.
-- **New feature:** `architect` UPDATES docs → `planner` APPENDS tasks →
-  pipeline per task.
-- **Bug:** `tdd_test_writer` (reproducing test) → specialist →
-  `code_reviewer` → `git_committer`.
-- **Wrap-up:** `security_auditor` on the whole codebase, clean start check,
-  README, summary (tasks, tests, commits).
+- Start with targeted searches and the files the task touches. Read surrounding
+  code when needed; do not load every role, architecture file or task record.
+- A delegation brief contains the task, acceptance, relevant paths, constraints,
+  current evidence and expected output. Avoid copying the full conversation or
+  unrelated files when the client allows a smaller context.
+- Delegate one specialist at a time. Verify its report against the actual files
+  and commands. Reuse valid evidence for unchanged parts.
+- Run the smallest meaningful check, then any required broader checks. Do not
+  repeat a passing test merely because another role received the task; rerun
+  when a change, failure or unresolved concern affects the result.
+- Add regression tests for meaningful behavior or defects. Simple copy edits
+  and branding changes normally need direct checks, not new application tests.
+- Stop after three unsuccessful fix rounds or two repeated infrastructure
+  failures. Return the evidence and remaining blocker, without restarting the
+  same review cycle under a different role.
+- Update existing task or architecture records only when the change needs a
+  durable handoff. Do not create a new plan file for each small task.
+- Git commits can be handled by the main agent within authorization. Check
+  whether Git exists; use exact file paths, preserve unrelated changes and
+  never claim a commit that did not happen. Publishing is a separate action.
+- Report what changed, the checks actually run and material limitations. Do not
+  claim token savings, faster execution or better quality without measurements.
 
 ---
 
 ## Current project state
 - The shared specification, dual-client generator and behavioral tests are implemented.
 - Consult tasks/overview.md for validation results, delivery status and limits.
-- The repository remains private unless the user explicitly approves a visibility change.
+- The repository is public. Publishing changes still requires explicit user approval.

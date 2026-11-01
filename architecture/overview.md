@@ -30,3 +30,12 @@ the source. Client discovery and actual agent dispatch are separate checks;
 successful syntax validation does not establish either.
 
 Upstream prompts remain an attributed AGPL-3.0 adaptation. See `NOTICE.md`.
+
+## Workflow policy
+
+The shared starter uses three risk tiers. The main agent completes ordinary
+work directly and may call specialists for bounded needs. High-impact work adds
+focused independent review and original-evidence checks. Existing project rules
+are preserved, so adopting this policy requires an explicit merge there.
+This is instruction-level routing; the generator does not select agents, meter
+tokens or enforce a runtime budget. Savings and quality remain unmeasured.

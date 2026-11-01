@@ -8,12 +8,14 @@ Upstream LICENSE blob: `0ad25db4bd1d86c452db3f9602ccdbe172438f52`.
 The original GNU Affero General Public License version 3 text is preserved
 verbatim in `LICENSE`.
 
-Modified on **2026-11-01** by Codex Agent Team contributors:
+Modified on **2026-11-01** by Agent Team Kit contributors:
 
 - Adapted the role prompts and main-session workflow for Codex.
 - Added a shared specification, Codex/Claude Code generators and static checks.
 - Added preservation of existing files, digest-based drift checks and tests.
 - Added a test-runner bootstrap exception and evidence-based status reporting.
+- Added a risk-based default workflow, optional delegation and proportional checks.
+- Renamed the adaptation Agent Team Kit to describe both client formats.
 - Replaced local identity/path examples with reusable English documentation.
 
 Earlier revisions incorrectly labelled this adaptation MIT. That label did not
