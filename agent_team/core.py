@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import tempfile
 import tomllib
 from pathlib import Path
@@ -71,9 +72,16 @@ def validate(spec):
 
 def load_spec(path):
     path = Path(path)
-    if path.stat().st_size > MAX_SOURCE_BYTES:
-        raise ValueError('source exceeds the 1 MiB size limit')
-    data = path.read_bytes()
+    if path.is_symlink():
+        raise ValueError('source must be a regular file, not a symlink')
+    flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0)
+    with os.fdopen(os.open(path, flags), 'rb') as stream:
+        metadata = os.fstat(stream.fileno())
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ValueError('source must be a regular file')
+        if metadata.st_size > MAX_SOURCE_BYTES:
+            raise ValueError('source exceeds the 1 MiB size limit')
+        data = stream.read(MAX_SOURCE_BYTES + 1)
     if len(data) > MAX_SOURCE_BYTES:
         raise ValueError('source exceeds the 1 MiB size limit')
     return validate(tomllib.loads(data.decode('utf-8')))
@@ -137,6 +145,15 @@ def _managed(path):
 
 def _root(output):
     path = Path(output).expanduser().absolute()
+    system_aliases = {'/tmp': '/private/tmp', '/var': '/private/var'}
+    for parent in (path, *path.parents):
+        if parent.is_symlink():
+            try:
+                permitted = system_aliases.get(str(parent)) == str(parent.resolve())
+            except (OSError, RuntimeError) as exc:
+                raise ValueError('unresolvable symlink in output path') from exc
+            if not permitted:
+                raise ValueError('refusing symlink in output path')
     if path.is_symlink() or (path.exists() and not path.is_dir()):
         raise ValueError('output must be a directory, not a file or symlink')
     return path.resolve()
@@ -242,4 +259,13 @@ def check(output, files):
         issues.append('generated-file manifest is missing or differs from the source')
     if not _safe_path(root, 'AGENTS.md').exists():
         issues.append('missing shared project guidance: AGENTS.md')
+    # Preserve unrelated files, but disclose extra native definitions that may
+    # affect the client's available roles. Never parse or overwrite these files.
+    for folder, suffix in (('.codex/agents', '.toml'), ('.claude/agents', '.md')):
+        directory = root / folder
+        if directory.is_dir() and not directory.is_symlink():
+            for candidate in sorted(directory.iterdir()):
+                relative = candidate.relative_to(root).as_posix()
+                if candidate.suffix == suffix and relative not in files:
+                    issues.append(f'unmanaged native agent definition: {relative}; review explicitly')
     return issues

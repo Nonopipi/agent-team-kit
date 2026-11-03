@@ -22,3 +22,17 @@ Earlier revisions incorrectly labelled this adaptation MIT. That label did not
 relicense the upstream material. This adaptation is distributed under AGPL-3.0;
 retain applicable notices and the license when redistributing it. The project
 does not claim the upstream prompts or workflow as an entirely original work.
+
+Additional implementation on **2026-11-02** by Agent Team Kit contributors:
+
+- Added a local takeover evidence runner, source/acceptance comparison and CLI.
+- Added behavioral checks and a reproducible, intentionally defective WSGI demo.
+- Documented execution limits and the distinction between named-check results
+  and full application correctness. No upstream prompt authorship is claimed.
+
+Review corrections on **2026-11-02** by Agent Team Kit contributors:
+
+- Corrected skipped-test classification, credential redaction and report validation.
+- Hardened source/output paths and disclosed extra native agent definitions.
+- Unified specialist guidance with the risk-based workflow; added regression
+  tests and a reproducible self-audit of actual pre-fix Kit modules.

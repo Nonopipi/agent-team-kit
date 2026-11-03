@@ -1,0 +1,25 @@
+{
+  "acceptance_changed": false,
+  "after_source": "6dc0bd0b53d4d1fd3ce944e90ef508bda0fd40d9c5d1adfadb6e2b117cadb82a",
+  "before_source": "20e081e360d682067768d95d30cf96ebee1456c7057f788ae72c2058ad25474a",
+  "changed_files": [
+    "agent_team/__init__.py",
+    "agent_team/core.py",
+    "agent_team/takeover.py"
+  ],
+  "kind": "takeover-comparison",
+  "limits": [
+    "Passing named checks is not proof of full correctness or a security certification.",
+    "Reports are local evidence, not signed or tamper-proof attestations.",
+    "Undeclared test files, external test logic and dependencies require separate review."
+  ],
+  "plan_digest": "8d5ec14963b1566b4f5ddef4e6458694fda90ea595d9ac9af4a091e9e123a718",
+  "previously_unverified_checks_now_passing": [],
+  "recovered_checks": [
+    "review-regressions"
+  ],
+  "regressed_checks": [],
+  "schema_version": 1,
+  "unresolved_checks": [],
+  "verdict": "named-checks-pass"
+}

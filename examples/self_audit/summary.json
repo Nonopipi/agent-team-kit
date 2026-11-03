@@ -1,0 +1,82 @@
+{
+  "acceptance_tests_unchanged": true,
+  "after": [
+    {
+      "id": "review-regressions",
+      "status": "passed",
+      "tests": {
+        "discovered": 8,
+        "executed": 8,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "id": "existing-generator",
+      "status": "passed",
+      "tests": {
+        "discovered": 13,
+        "executed": 13,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "id": "existing-takeover",
+      "status": "passed",
+      "tests": {
+        "discovered": 23,
+        "executed": 23,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    }
+  ],
+  "before": [
+    {
+      "id": "review-regressions",
+      "status": "failed",
+      "tests": {
+        "discovered": 8,
+        "executed": 8,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "id": "existing-generator",
+      "status": "passed",
+      "tests": {
+        "discovered": 13,
+        "executed": 13,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "id": "existing-takeover",
+      "status": "passed",
+      "tests": {
+        "discovered": 23,
+        "executed": 23,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    }
+  ],
+  "case": "Actual Kit defects, self-audit; not an external app/customer validation",
+  "changed_files": [
+    "agent_team/__init__.py",
+    "agent_team/core.py",
+    "agent_team/takeover.py"
+  ],
+  "costs": {
+    "after_check_seconds": 4.4777,
+    "before_check_seconds": 6.4249,
+    "case_wall_seconds": 10.9384,
+    "host_assistant_tokens": null,
+    "limits": "Local Python commands only. Host assistant usage/billing is unavailable. This single run is not a general speed or token benchmark.",
+    "model_calls_started_by_case": 0,
+    "monetary_cost": null
+  }
+}

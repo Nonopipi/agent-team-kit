@@ -1,0 +1,208 @@
+{
+  "created_at": "2026-11-02T23:03:51.030191+00:00",
+  "evidence_stable": true,
+  "kind": "takeover-run",
+  "limits": [
+    "Explicit checks only; no exhaustive audit or security certification.",
+    "Trusted commands run without a sandbox and may modify files or access the network.",
+    "Logs are redacted best-effort only; review before sharing.",
+    "Source stability means matching captured endpoints, not continuous monitoring.",
+    "Dependencies, external services and model tokens are not measured."
+  ],
+  "plan": {
+    "acceptance_paths": [
+      "tests",
+      "team.toml"
+    ],
+    "checks": [
+      {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_review_regressions.py",
+          "-v"
+        ],
+        "description": "Run unchanged acceptance module test_review_regressions.py.",
+        "id": "review-regressions",
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_generator.py",
+          "-v"
+        ],
+        "description": "Run unchanged acceptance module test_generator.py.",
+        "id": "existing-generator",
+        "timeout_seconds": 60
+      },
+      {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-p",
+          "test_takeover.py",
+          "-v"
+        ],
+        "description": "Run unchanged acceptance module test_takeover.py.",
+        "id": "existing-takeover",
+        "timeout_seconds": 60
+      }
+    ],
+    "kind": "takeover-plan",
+    "name": "agent-team-kit-self-audit",
+    "schema_version": 1,
+    "scope": "Actual Kit defects: skipped tests, credential redaction, malformed evidence, symlink paths, nonregular inputs, extra native definitions; retain existing behavior."
+  },
+  "plan_digest": "8d5ec14963b1566b4f5ddef4e6458694fda90ea595d9ac9af4a091e9e123a718",
+  "results": [
+    {
+      "duration_seconds": 0.603,
+      "exit_code": 0,
+      "id": "review-regressions",
+      "output": "test_custom_symlink_in_output_ancestor_cannot_write_outside (test_review_regressions.GeneratorReviewRegressions.test_custom_symlink_in_output_ancestor_cannot_write_outside) ... ok\ntest_nonregular_source_refused_without_hanging (test_review_regressions.GeneratorReviewRegressions.test_nonregular_source_refused_without_hanging) ... ok\ntest_unmanaged_native_agent_is_disclosed_without_overwrite (test_review_regressions.GeneratorReviewRegressions.test_unmanaged_native_agent_is_disclosed_without_overwrite) ... ok\ntest_all_skipped_tests_are_unverified (test_review_regressions.TakeoverReviewRegressions.test_all_skipped_tests_are_unverified) ... ok\ntest_common_credential_formats_are_redacted (test_review_regressions.TakeoverReviewRegressions.test_common_credential_formats_are_redacted) ... ok\ntest_malformed_result_items_are_rejected_without_traceback (test_review_regressions.TakeoverReviewRegressions.test_malformed_result_items_are_rejected_without_traceback) ... ok\ntest_partially_skipped_counts_are_visible (test_review_regressions.TakeoverReviewRegressions.test_partially_skipped_counts_are_visible) ... ok\ntest_passed_status_cannot_override_all_skipped_evidence (test_review_regressions.TakeoverReviewRegressions.test_passed_status_cannot_override_all_skipped_evidence) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.499s\n\nOK\n",
+      "output_truncated": false,
+      "status": "passed",
+      "test_summary": {
+        "discovered": 8,
+        "executed": 8,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "duration_seconds": 0.7429,
+      "exit_code": 0,
+      "id": "existing-generator",
+      "output": "test_changed_source_updates_unedited_managed_files (test_generator.GeneratorTests.test_changed_source_updates_unedited_managed_files) ... ok\ntest_cli_generate_check_and_drift_end_to_end (test_generator.GeneratorTests.test_cli_generate_check_and_drift_end_to_end) ... ok\ntest_cli_rejects_invalid_spec_without_traceback_or_output (test_generator.GeneratorTests.test_cli_rejects_invalid_spec_without_traceback_or_output) ... ok\ntest_drift_detected_and_not_overwritten (test_generator.GeneratorTests.test_drift_detected_and_not_overwritten) ... ok\ntest_generation_is_deterministic_and_preserves_project_rules (test_generator.GeneratorTests.test_generation_is_deterministic_and_preserves_project_rules) ... ok\ntest_native_formats_round_trip_without_prompt_loss (test_generator.GeneratorTests.test_native_formats_round_trip_without_prompt_loss) ... ok\ntest_oversized_source_rejected (test_generator.GeneratorTests.test_oversized_source_rejected) ... ok\ntest_path_traversal_duplicate_and_client_collision_rejected (test_generator.GeneratorTests.test_path_traversal_duplicate_and_client_collision_rejected) ... ok\ntest_repository_spec_contains_all_nine_roles (test_generator.GeneratorTests.test_repository_spec_contains_all_nine_roles) ... ok\ntest_symlink_parent_or_guidance_cannot_escape_output (test_generator.GeneratorTests.test_symlink_parent_or_guidance_cannot_escape_output) ... ok\ntest_unknown_fields_and_invalid_types_are_rejected (test_generator.GeneratorTests.test_unknown_fields_and_invalid_types_are_rejected) ... ok\ntest_unmanaged_conflict_refuses_all_writes (test_generator.GeneratorTests.test_unmanaged_conflict_refuses_all_writes) ... ok\ntest_unsafe_manifest_and_removed_roles_refused (test_generator.GeneratorTests.test_unsafe_manifest_and_removed_roles_refused) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.642s\n\nOK\n",
+      "output_truncated": false,
+      "status": "passed",
+      "test_summary": {
+        "discovered": 13,
+        "executed": 13,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    },
+    {
+      "duration_seconds": 3.1318,
+      "exit_code": 0,
+      "id": "existing-takeover",
+      "output": "test_changed_acceptance_prevents_claimed_recovery (test_takeover.TakeoverTests.test_changed_acceptance_prevents_claimed_recovery) ... ok\ntest_changed_plan_rejected (test_takeover.TakeoverTests.test_changed_plan_rejected) ... ok\ntest_changed_runner_rejected (test_takeover.TakeoverTests.test_changed_runner_rejected) ... ok\ntest_cli_init_run_compare_and_errors (test_takeover.TakeoverTests.test_cli_init_run_compare_and_errors) ... ok\ntest_empty_unittest_discovery_is_unverified (test_takeover.TakeoverTests.test_empty_unittest_discovery_is_unverified) ... ok\ntest_execution_error_is_not_a_confirmed_recovered_failure (test_takeover.TakeoverTests.test_execution_error_is_not_a_confirmed_recovered_failure) ... ok\ntest_existing_report_preserved_without_execution (test_takeover.TakeoverTests.test_existing_report_preserved_without_execution) ... ok\ntest_failed_check_recovers_only_after_source_fix (test_takeover.TakeoverTests.test_failed_check_recovers_only_after_source_fix) ... ok\ntest_fifo_is_not_read_and_reports_are_private (test_takeover.TakeoverTests.test_fifo_is_not_read_and_reports_are_private) ... ok\ntest_incomplete_evidence_cannot_claim_pass (test_takeover.TakeoverTests.test_incomplete_evidence_cannot_claim_pass) ... ok\ntest_init_does_not_execute_and_detects_defined_scripts_only (test_takeover.TakeoverTests.test_init_does_not_execute_and_detects_defined_scripts_only) ... ok\ntest_invalid_plans_fail_before_execution (test_takeover.TakeoverTests.test_invalid_plans_fail_before_execution) ... ok\ntest_inventory_limits_are_disclosed (test_takeover.TakeoverTests.test_inventory_limits_are_disclosed) ... ok\ntest_missing_acceptance_path_refused (test_takeover.TakeoverTests.test_missing_acceptance_path_refused) ... ok\ntest_missing_program_is_unverified_not_passed (test_takeover.TakeoverTests.test_missing_program_is_unverified_not_passed) ... ok\ntest_output_inside_project_and_symlink_output_refused (test_takeover.TakeoverTests.test_output_inside_project_and_symlink_output_refused) ... ok\ntest_redaction_and_environment_allowlist (test_takeover.TakeoverTests.test_redaction_and_environment_allowlist) ... ok\ntest_regression_reported (test_takeover.TakeoverTests.test_regression_reported) ... ok\ntest_report_missing_results_and_inconsistent_exit_rejected (test_takeover.TakeoverTests.test_report_missing_results_and_inconsistent_exit_rejected) ... ok\ntest_secret_files_and_symlinks_not_read (test_takeover.TakeoverTests.test_secret_files_and_symlinks_not_read) ... ok\ntest_source_change_during_checks_blocks_comparison (test_takeover.TakeoverTests.test_source_change_during_checks_blocks_comparison) ... ok\ntest_timeout_and_bounded_output (test_takeover.TakeoverTests.test_timeout_and_bounded_output) ... ok\ntest_unreadable_directory_is_disclosed (test_takeover.TakeoverTests.test_unreadable_directory_is_disclosed) ... ok\n\n----------------------------------------------------------------------\nRan 23 tests in 2.958s\n\nOK\n",
+      "output_truncated": false,
+      "status": "passed",
+      "test_summary": {
+        "discovered": 23,
+        "executed": 23,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "complete": true,
+    "digest": "6dc0bd0b53d4d1fd3ce944e90ef508bda0fd40d9c5d1adfadb6e2b117cadb82a",
+    "excluded": [
+      ".agents",
+      ".aws",
+      ".claude",
+      ".codex",
+      ".config",
+      ".git",
+      ".gnupg",
+      ".hg",
+      ".kube",
+      ".mypy_cache",
+      ".next",
+      ".pytest_cache",
+      ".ssh",
+      ".svn",
+      ".venv",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "venv"
+    ],
+    "files": {
+      "LICENSE": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+      "NOTICE.md": "507a86953d50a80a18eb3071101257817aa3b54a74b2d62dead10c689708fca0",
+      "agent_team/__init__.py": "3d4f1d05e65ce1c7694a2d06cb34effcc09f8e5cc862dddc4148d87371ba3407",
+      "agent_team/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "agent_team/cli.py": "4f59ca02cc65a7020553f3beb6268cefef57d84ba5c0135b4a85882dd193402a",
+      "agent_team/core.py": "12f6bc7f5acbbe6603c76129965c4ad0487137da96d299a8c7ed55a458f152bf",
+      "agent_team/takeover.py": "ea2ef19fe2fa0a88aa1db36e27373c15e1d44bd1fcaab24b23071469dccf2ddc",
+      "agent_team/templates/AGENTS.md": "3fd946b19e5d640405031baf4a88a4ebec0ffbc29e1e783c70d0d05c864974e9",
+      "team.toml": "e57ac6e17d77fc849a1a12d5b1edd84d177215f2ad111c6d4e73c162a5bc0e5c",
+      "tests/test_generator.py": "eb713a51b7563024bf13cf38e0ae0a1ec4b6322132672168ad94fb001c1aa93c",
+      "tests/test_review_regressions.py": "02a60e782147ea0e946de0f49ffa14f866c6aad8bd93971689d87ab4bee6b72a",
+      "tests/test_takeover.py": "883c3a8520ddb651c32cf9b13480966c128303f207c29684c5b00093e6c70da9"
+    },
+    "omissions": [],
+    "secret_files_excluded": true
+  },
+  "source_after": {
+    "complete": true,
+    "digest": "6dc0bd0b53d4d1fd3ce944e90ef508bda0fd40d9c5d1adfadb6e2b117cadb82a",
+    "excluded": [
+      ".agents",
+      ".aws",
+      ".claude",
+      ".codex",
+      ".config",
+      ".git",
+      ".gnupg",
+      ".hg",
+      ".kube",
+      ".mypy_cache",
+      ".next",
+      ".pytest_cache",
+      ".ssh",
+      ".svn",
+      ".venv",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "venv"
+    ],
+    "files": {
+      "LICENSE": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef",
+      "NOTICE.md": "507a86953d50a80a18eb3071101257817aa3b54a74b2d62dead10c689708fca0",
+      "agent_team/__init__.py": "3d4f1d05e65ce1c7694a2d06cb34effcc09f8e5cc862dddc4148d87371ba3407",
+      "agent_team/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "agent_team/cli.py": "4f59ca02cc65a7020553f3beb6268cefef57d84ba5c0135b4a85882dd193402a",
+      "agent_team/core.py": "12f6bc7f5acbbe6603c76129965c4ad0487137da96d299a8c7ed55a458f152bf",
+      "agent_team/takeover.py": "ea2ef19fe2fa0a88aa1db36e27373c15e1d44bd1fcaab24b23071469dccf2ddc",
+      "agent_team/templates/AGENTS.md": "3fd946b19e5d640405031baf4a88a4ebec0ffbc29e1e783c70d0d05c864974e9",
+      "team.toml": "e57ac6e17d77fc849a1a12d5b1edd84d177215f2ad111c6d4e73c162a5bc0e5c",
+      "tests/test_generator.py": "eb713a51b7563024bf13cf38e0ae0a1ec4b6322132672168ad94fb001c1aa93c",
+      "tests/test_review_regressions.py": "02a60e782147ea0e946de0f49ffa14f866c6aad8bd93971689d87ab4bee6b72a",
+      "tests/test_takeover.py": "883c3a8520ddb651c32cf9b13480966c128303f207c29684c5b00093e6c70da9"
+    },
+    "omissions": [],
+    "secret_files_excluded": true
+  },
+  "tool": {
+    "runner_sha256": "ea2ef19fe2fa0a88aa1db36e27373c15e1d44bd1fcaab24b23071469dccf2ddc",
+    "version": "0.2.1"
+  }
+}

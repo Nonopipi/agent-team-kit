@@ -1,0 +1,127 @@
+{
+  "created_at": "2026-11-02T23:07:14.654275+00:00",
+  "evidence_stable": true,
+  "kind": "takeover-run",
+  "limits": [
+    "Explicit checks only; no exhaustive audit or security certification.",
+    "Trusted commands run without a sandbox and may modify files or access the network.",
+    "Logs are redacted best-effort only; review before sharing.",
+    "Source stability means matching captured endpoints, not continuous monitoring.",
+    "Dependencies, external services and model tokens are not measured."
+  ],
+  "plan": {
+    "acceptance_paths": [
+      "tests"
+    ],
+    "checks": [
+      {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests",
+          "-v"
+        ],
+        "description": "Existing Python unittest checks; review their coverage.",
+        "id": "tests",
+        "timeout_seconds": 60
+      }
+    ],
+    "kind": "takeover-plan",
+    "name": "synthetic-persistence-demo",
+    "schema_version": 1,
+    "scope": "WSGI POST/GET persistence across application instances; invalid title and unknown route."
+  },
+  "plan_digest": "af3cef09e58426c81b9b0029f00e7f82ef77ba15afc19f5895e86a8661652ce2",
+  "results": [
+    {
+      "duration_seconds": 0.0675,
+      "exit_code": 0,
+      "id": "tests",
+      "output": "test_invalid_title_rejected (test_persistence.PersistenceTests.test_invalid_title_rejected) ... ok\ntest_successful_save_survives_new_app_instance (test_persistence.PersistenceTests.test_successful_save_survives_new_app_instance) ... ok\ntest_unknown_route_rejected (test_persistence.PersistenceTests.test_unknown_route_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.003s\n\nOK\n",
+      "output_truncated": false,
+      "status": "passed",
+      "test_summary": {
+        "discovered": 3,
+        "executed": 3,
+        "framework": "unittest",
+        "skipped": 0
+      }
+    }
+  ],
+  "schema_version": 1,
+  "source": {
+    "complete": true,
+    "digest": "040d0ae27994e62e604154dcae1be4abe4b7422828d967094e415f29e411470a",
+    "excluded": [
+      ".agents",
+      ".aws",
+      ".claude",
+      ".codex",
+      ".config",
+      ".git",
+      ".gnupg",
+      ".hg",
+      ".kube",
+      ".mypy_cache",
+      ".next",
+      ".pytest_cache",
+      ".ssh",
+      ".svn",
+      ".venv",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "venv"
+    ],
+    "files": {
+      "README.md": "7229d3555a9160745adea5ef21993c7a5e777ac9bbd420294484a85007c77b5c",
+      "app.py": "48ed250726466775f1c93200efa54608d5ed396fdb4f0fb96e8d2ca28c72fcb5",
+      "tests/test_persistence.py": "7db3f184defcdedacf8b3bfd8f3740c8784396080f2b1d0f6a68af4330ddca33"
+    },
+    "omissions": [],
+    "secret_files_excluded": true
+  },
+  "source_after": {
+    "complete": true,
+    "digest": "040d0ae27994e62e604154dcae1be4abe4b7422828d967094e415f29e411470a",
+    "excluded": [
+      ".agents",
+      ".aws",
+      ".claude",
+      ".codex",
+      ".config",
+      ".git",
+      ".gnupg",
+      ".hg",
+      ".kube",
+      ".mypy_cache",
+      ".next",
+      ".pytest_cache",
+      ".ssh",
+      ".svn",
+      ".venv",
+      "__pycache__",
+      "build",
+      "coverage",
+      "dist",
+      "node_modules",
+      "venv"
+    ],
+    "files": {
+      "README.md": "7229d3555a9160745adea5ef21993c7a5e777ac9bbd420294484a85007c77b5c",
+      "app.py": "48ed250726466775f1c93200efa54608d5ed396fdb4f0fb96e8d2ca28c72fcb5",
+      "tests/test_persistence.py": "7db3f184defcdedacf8b3bfd8f3740c8784396080f2b1d0f6a68af4330ddca33"
+    },
+    "omissions": [],
+    "secret_files_excluded": true
+  },
+  "tool": {
+    "runner_sha256": "ea2ef19fe2fa0a88aa1db36e27373c15e1d44bd1fcaab24b23071469dccf2ddc",
+    "version": "0.2.1"
+  }
+}

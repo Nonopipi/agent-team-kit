@@ -1,0 +1,60 @@
+{
+  "acceptance_paths": [
+    "tests",
+    "team.toml"
+  ],
+  "checks": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_review_regressions.py",
+        "-v"
+      ],
+      "description": "Run unchanged acceptance module test_review_regressions.py.",
+      "id": "review-regressions",
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_generator.py",
+        "-v"
+      ],
+      "description": "Run unchanged acceptance module test_generator.py.",
+      "id": "existing-generator",
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_takeover.py",
+        "-v"
+      ],
+      "description": "Run unchanged acceptance module test_takeover.py.",
+      "id": "existing-takeover",
+      "timeout_seconds": 60
+    }
+  ],
+  "kind": "takeover-plan",
+  "name": "agent-team-kit-self-audit",
+  "schema_version": 1,
+  "scope": "Actual Kit defects: skipped tests, credential redaction, malformed evidence, symlink paths, nonregular inputs, extra native definitions; retain existing behavior."
+}

@@ -39,3 +39,33 @@ focused independent review and original-evidence checks. Existing project rules
 are preserved, so adopting this policy requires an explicit merge there.
 This is instruction-level routing; the generator does not select agents, meter
 tokens or enforce a runtime budget. Savings and quality remain unmeasured.
+
+## Takeover evidence workflow: first version
+
+Add a standard-library CLI under `takeover init`, `takeover run` and
+`takeover compare`. Init inventories a bounded source tree without executing
+project code and proposes editable argv-based checks. Run executes only the
+explicit plan, sequentially, with deadlines, bounded/redacted logs and source
+fingerprints before/after. Compare requires the same plan and stable, complete
+source captures; changed acceptance files prevent a claimed recovery.
+Reports distinguish passed, failed, timed-out and errored checks. Passing
+checks establish only their named scope. The tool neither discovers every bug
+nor repairs applications autonomously; an operator or coding agent performs
+bounded fixes between runs. Command execution is for trusted repositories on
+POSIX systems and is not a sandbox. Reports stay local and are never uploaded.
+A deliberately broken WSGI persistence example will demonstrate a reproduced
+failure, a minimal code fix with unchanged tests, and a verified check recovery.
+
+## Review fixes: local 0.2.1
+
+Configuration input uses bounded regular-file reads. Custom output symlink
+ancestors are refused before resolution; known macOS temporary-directory aliases
+are normalized. Extra native agent definitions are disclosed without reading or
+replacing them. Specialist prompts now follow the same scope/risk policy.
+Recognized unittest evidence records executed/skipped counts, and empty or
+all-skipped execution is unverified. Report validation rejects non-object result
+entries and falsely passed skipped evidence. Credential redaction handles common
+quoted values and authentication schemes but remains best-effort.
+`examples/run_self_audit.py` reconstructs exact pre-fix modules with current
+unchanged acceptance tests and role definitions. It is an offline self-audit,
+not a full release checkout, independent review or another application case.

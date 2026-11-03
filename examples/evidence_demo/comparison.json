@@ -1,0 +1,23 @@
+{
+  "acceptance_changed": false,
+  "after_source": "040d0ae27994e62e604154dcae1be4abe4b7422828d967094e415f29e411470a",
+  "before_source": "b52b13a9b8c07dfc58635b7b8640c2d78555af4e9b801e47e9a4a01565b5039b",
+  "changed_files": [
+    "app.py"
+  ],
+  "kind": "takeover-comparison",
+  "limits": [
+    "Passing named checks is not proof of full correctness or a security certification.",
+    "Reports are local evidence, not signed or tamper-proof attestations.",
+    "Undeclared test files, external test logic and dependencies require separate review."
+  ],
+  "plan_digest": "af3cef09e58426c81b9b0029f00e7f82ef77ba15afc19f5895e86a8661652ce2",
+  "previously_unverified_checks_now_passing": [],
+  "recovered_checks": [
+    "tests"
+  ],
+  "regressed_checks": [],
+  "schema_version": 1,
+  "unresolved_checks": [],
+  "verdict": "named-checks-pass"
+}

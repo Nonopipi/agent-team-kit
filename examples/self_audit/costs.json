@@ -1,0 +1,9 @@
+{
+  "after_check_seconds": 4.4777,
+  "before_check_seconds": 6.4249,
+  "case_wall_seconds": 10.9384,
+  "host_assistant_tokens": null,
+  "limits": "Local Python commands only. Host assistant usage/billing is unavailable. This single run is not a general speed or token benchmark.",
+  "model_calls_started_by_case": 0,
+  "monetary_cost": null
+}

@@ -1,8 +1,15 @@
 # Agent Team Kit
 
-A local configuration generator for Codex and Claude Code. Define roles once in
-`team.toml`, generate both native formats, and check that the generated files
-still match the source. Python 3.11+ is the only requirement.
+> **Experimental preview 0.2.1.** Includes configuration generation and evidence
+> tools for explicit acceptance checks. Verified through local regression tests
+> and a Kit self-audit; cross-application use and real agent dispatch remain
+> unverified. This is not a production-readiness or security certification.
+
+A local toolkit for Codex and Claude Code, with a shared agent configuration
+generator and a project takeover evidence workflow. Define roles once in
+`team.toml`, generate both native formats, and compare explicit acceptance
+checks before and after a fix. Python 3.11+ is the only dependency; takeover
+command execution currently requires a POSIX system such as macOS or Linux.
 
 This is an AGPL-3.0 adaptation of [Claude Code Agents by Aidan-M-Dev](https://github.com/Aidan-M-Dev/claude-code-agents).
 See [NOTICE.md](NOTICE.md) for the source and modifications, and [LICENSE](LICENSE)
@@ -23,6 +30,44 @@ python3 -m unittest discover -s tests -v
 Edit `team.toml`, update its `modified_date`, then regenerate and check. Edit the
 source definition rather than the generated role files. The generator makes no
 network requests, launches no AI sessions, and installs no dependencies.
+
+## Take over and verify an existing project
+
+Version 0.2 adds executable evidence tools, in addition to agent prompts.
+Version 0.2.1 fixes the review defects and unifies specialist rules.
+
+```sh
+python3 examples/run_takeover_demo.py --output /tmp/agent-team-kit-demo
+```
+
+This synthetic demonstration reproduces a lost-save bug, fixes only application
+code in a scratch copy, then verifies the unchanged tests and compares reports.
+The fixture uses an in-process WSGI app; no browser or AI model is launched.
+Choose a new scratch directory for each run.
+
+For your own project, `takeover init` suggests an editable check plan; `takeover
+run` executes its reviewed commands and records bounded output, source hashes
+and outcomes; `takeover compare` detects recovered/regressed checks and changed
+acceptance criteria. It refuses to call changed tests a verified recovery.
+
+Read the [takeover guide](docs/takeover.md) before executing project commands.
+Commands run without a sandbox. The tool does not automatically find every bug,
+repair apps or certify security. It captures evidence for the operator or coding
+agent doing that work. No token, latency or customer-demand benefit is claimed.
+
+## Reproduce the actual Kit review fixes
+
+```sh
+python3 examples/run_self_audit.py --output /tmp/agent-team-kit-self-audit
+```
+
+This is a self-audit of actual Kit code, distinct from the deliberately broken
+WSGI demonstration. The recorded run preserves the same acceptance plan/tests:
+the historical source fails the new regression group while retaining its 36
+previously passing tests; the fixed copy passes all 44 tests. See the
+[self-audit case](examples/self_audit/README.md) for exact source provenance,
+findings, results, timing, omissions and an offline replay. It is not validation
+of a different application or an independent review.
 
 ## What is generated
 
@@ -137,13 +182,15 @@ enforced read-only sandbox.
 - Identical output files can be adopted without overwriting their contents.
 - Existing managed files can be updated if their digests still match the previous
   manifest. Manually changed or conflicting unmanaged files are refused.
-- Existing unrelated files are preserved. Symlink targets and unsafe manifest
-  paths are refused. Role removal is not silently pruned; review stale files
+- Existing unrelated files are preserved. Custom output symlink ancestors and
+  targets, nonregular source inputs and unsafe manifest paths are refused.
+  Standard macOS `/tmp/...` and `/var/...` aliases are normalized. Role removal is not silently pruned; review stale files
   explicitly or generate into a new directory.
 - Conflicts are checked before writes. Each write is atomic, but the whole batch
   is not a single filesystem transaction. Do not run concurrent generators in
   the same output directory.
-- `check` compares expected bytes and the manifest. Exit code 0 means a matching
+- `check` compares expected bytes and the manifest, and flags extra native
+  agent definitions for explicit review without overwriting them. Exit code 0 means a matching
   static snapshot, 1 means drift, and 2 means invalid input or an operation error.
 
 ## Verification limits
@@ -151,8 +198,9 @@ enforced read-only sandbox.
 Behavioral tests cover both formats, name collisions, invalid source files,
 determinism, managed updates, drift, CLI exit codes, overwrite prevention and
 symlink escapes. The repository snapshot can be checked without using any AI
-credits. Validation is local and static: it does not establish client discovery,
-agent dispatch, model performance, cost savings or successful application delivery.
+credits. Generator configuration checks are static. Takeover checks execute only the
+reviewed commands. Neither establishes client agent discovery/dispatch, model
+performance, cost savings or complete application correctness.
 Client-runtime results and remaining limitations are recorded in
 [tasks/overview.md](tasks/overview.md).
 

@@ -1,4 +1,4 @@
-<!-- Adapted from Aidan-M-Dev/claude-code-agents; AGPL-3.0. Modified 2026-11-01. -->
+<!-- Adapted from Aidan-M-Dev/claude-code-agents; AGPL-3.0. Modified 2026-11-02. -->
 # AGENTS.md — Agent Team Kit
 
 Read by every Codex session in this repo, including spawned subagents.
@@ -12,7 +12,9 @@ Part A plus your own developer instructions and skip Part B.
 
 ### What this is
 - A Python 3.11+ standard-library CLI that generates Codex and Claude Code
-  agent definitions from `team.toml` and detects configuration drift.
+  agent definitions, detects configuration drift and captures takeover evidence.
+- The takeover runner executes explicit trusted check plans on POSIX systems;
+  it does not sandbox commands, repair apps autonomously or certify security.
 - Shared role prompts live only in `team.toml`. Generated files in `.codex/`,
   `.claude/` and `CLAUDE.md` must be changed through the generator.
 - Architecture: `architecture/overview.md`. Status and evidence: `tasks/overview.md`.
@@ -24,6 +26,8 @@ Part A plus your own developer instructions and skip Part B.
 - Validate source: `python3 -m agent_team validate`.
 - Generate both clients: `python3 -m agent_team generate --output .`.
 - Check the snapshot: `python3 -m agent_team check --output .`.
+- Synthetic takeover demonstration: `python3 examples/run_takeover_demo.py --output /tmp/agent-team-kit-demo` (new output directory).
+- Takeover guide and execution limits: `docs/takeover.md`.
 - Full test suite: `python3 -m unittest discover -s tests -v`.
 - One test module: `python3 -m unittest discover -s tests -p test_generator.py -v`.
 - Typecheck/lint: no separate tools configured; do not invent passing results.
